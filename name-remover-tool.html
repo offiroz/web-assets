@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>כלי להסרת והחזרת שמות</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 10px;
+            background: linear-gradient(135deg, #f4f1e8 0%, #e8dcc0 100%);
+            min-height: 100vh;
+            direction: rtl;
+        }
+        
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+            }
+        }
+        
+        .container {
+            background: #fefcf7;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(139, 115, 85, 0.15);
+            border: 1px solid #e8dcc0;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+        }
+        
+        h1 {
+            text-align: center;
+            color: #5a4a3a;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 64px;
+            /* הדבק כאן את ה-base64 של התמונה במקום PASTE_IMAGE_HERE */
+            background-image: url('data:image/png;base64,PASTE_IMAGE_HERE');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            flex-shrink: 0;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 2px solid #d4c4a0;
+            border-radius: 10px;
+            background: #faf8f3;
+        }
+        
+        @media (min-width: 768px) {
+            .section {
+                margin-bottom: 30px;
+                padding: 20px;
+            }
+        }
+        
+        .section-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #6b5b4f;
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #6b5b4f;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #d4c4a0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+            background: #fefcf7;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #8b7355;
+            background: #ffffff;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        @media (min-width: 768px) {
+            textarea {
+                min-height: 120px;
+            }
+        }
+        
+        button {
+            background: linear-gradient(45deg, #8b7355, #a68b5b);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 3px;
+            width: 100%;
+        }
+        
+        @media (min-width: 768px) {
+            button {
+                padding: 12px 24px;
+                font-size: 16px;
+                margin: 5px;
+                width: auto;
+            }
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 115, 85, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .copy-btn {
+            background: linear-gradient(45deg, #6b8e3d, #7a9c47);
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+        
+        .copy-btn:hover {
+            box-shadow: 0 5px 15px rgba(107, 142, 61, 0.3);
+        }
+        
+        .result-container {
+            position: relative;
+            margin-top: 10px;
+        }
+        
+        .copy-success {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #6b8e3d;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .copy-success.show {
+            opacity: 1;
+        }
+        
+        .warning {
+            background: #f7f3e9;
+            border: 1px solid #d4c4a0;
+            color: #6b5b4f;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .icon {
+            font-size: 1.2em;
+            margin-left: 5px;
+        }
+        
+        .lang-btn {
+            background: linear-gradient(45deg, #9d8169, #b5967c);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 0 2px;
+            transition: all 0.3s;
+            width: auto;
+        }
+        
+        @media (min-width: 768px) {
+            .lang-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+                margin: 0 5px;
+            }
+        }
+        
+        .lang-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(157, 129, 105, 0.3);
+        }
+        
+        .lang-btn.active {
+            background: linear-gradient(45deg, #6b8e3d, #7a9c47);
+            box-shadow: 0 3px 10px rgba(107, 142, 61, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- בוחר שפה -->
+        <div style="text-align: center; margin-bottom: 20px;">
+            <button onclick="changeLanguage('he')" class="lang-btn" id="lang-he">עברית</button>
+            <button onclick="changeLanguage('ru')" class="lang-btn" id="lang-ru">Русский</button>
+            <button onclick="changeLanguage('ar')" class="lang-btn" id="lang-ar">العربية</button>
+        </div>
+        
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="https://raw.githubusercontent.com/offiroz/web-assets/main/logos/kfar-tikva/kfar%20tikva%20logo.png" 
+                 alt="לוגו כפר תקווה" 
+                 style="width: 60px; height: 48px; object-fit: contain; margin-bottom: 10px;">
+            <h1 id="title" style="margin: 0; color: #5a4a3a; font-size: 1.4em;">🔒 כלי להסרת והחזרת שמות</h1>
+        </div>
+        
+        <div class="warning" id="warning">
+            <strong>⚠️ חשוב:</strong> כלי זה עובד במחשב שלך בלבד. המידע לא נשלח לשום מקום!
+        </div>
+        
+        <!-- שלב 1: הסרת שמות -->
+        <div class="section">
+            <div class="section-title" id="step1-title">🔍 שלב 1: הסרת שמות</div>
+            
+            <label for="originalText" id="label-original">הטקסט המקורי:</label>
+            <textarea id="originalText" data-placeholder-he="הכנס כאן את הטקסט שבו יש שמות שברצונך להסיר..." data-placeholder-ru="Введите здесь текст, из которого хотите удалить имена..." data-placeholder-ar="أدخل هنا النص الذي تريد إزالة الأسماء منه..."></textarea>
+            
+            <label for="nameToRemove" id="label-names">שמות ווריאציות להסרה (מופרדים בפסיקים):</label>
+            <input type="text" id="nameToRemove" data-placeholder-he="למשל: יוסי כהן, יוסי, כהן" data-placeholder-ru="Например: Иван Петров, Иван, Петров" data-placeholder-ar="مثلاً: أحمد محمد، أحمد، محمد">
+            <div class="tip" id="tip">
+                💡 טיפ: רשום את השם המלא ואז גם את החלקים הנפרדים
+            </div>
+            
+            <button onclick="removeName()" id="btn-remove">
+                <span class="icon">🚫</span>
+                <span id="btn-remove-text">הסר שמות והחלף ב"פלוני אלמוני"</span>
+            </button>
+            
+            <div class="result-container">
+                <label for="cleanText" id="label-clean">טקסט נקי (ללא שמות):</label>
+                <textarea id="cleanText" readonly data-placeholder-he="כאן יופיע הטקסט הנקי..." data-placeholder-ru="Здесь появится очищенный текст..." data-placeholder-ar="سيظهر هنا النص المنظف..."></textarea>
+                <button class="copy-btn" onclick="copyToClipboard('cleanText')" id="btn-copy1">
+                    📋 <span id="btn-copy1-text">העתק טקסט נקי</span>
+                </button>
+                <div class="copy-success" id="copySuccess1">הועתק בהצלחה!</div>
+            </div>
+        </div>
+        
+        <!-- שלב 2: החזרת שמות -->
+        <div class="section">
+            <div class="section-title" id="step2-title">🔄 שלב 2: החזרת שמות</div>
+            
+            <label for="textWithAdvice" id="label-advice">טקסט עם עצות/שיפורים מה-AI:</label>
+            <textarea id="textWithAdvice" data-placeholder-he='הכנס כאן את הטקסט שקיבלת חזרה מה-AI (עם "פלוני אלמוני")...' data-placeholder-ru='Введите здесь текст, полученный от ИИ (с "неизвестным лицом")...' data-placeholder-ar='أدخل هنا النص الذي حصلت عليه من الذكاء الاصطناعي (مع "شخص مجهول")...'></textarea>
+            
+            <button onclick="restoreName()" id="btn-restore">
+                <span class="icon">🔄</span>
+                <span id="btn-restore-text">החזר שם מקורי</span>
+            </button>
+            
+            <div class="result-container">
+                <label for="finalText" id="label-final">טקסט סופי (עם השם המקורי):</label>
+                <textarea id="finalText" readonly data-placeholder-he="כאן יופיע הטקסט הסופי עם השם המקורי..." data-placeholder-ru="Здесь появится итоговый текст с исходным именем..." data-placeholder-ar="سيظهر هنا النص النهائي مع الاسم الأصلي..."></textarea>
+                <button class="copy-btn" onclick="copyToClipboard('finalText')" id="btn-copy2">
+                    📋 <span id="btn-copy2-text">העתק טקסט סופי</span>
+                </button>
+                <div class="copy-success" id="copySuccess2">הועתק בהצלחה!</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // משתנה גלובלי לשמירת השמות המקוריים
+        let originalNames = [];
+        let currentLanguage = 'he';
+        
+        // תרגומים
+        const translations = {
+            he: {
+                title: '🔒 כלי להסרת והחזרת שמות',
+                warning: '<strong>⚠️ חשוב:</strong> כלי זה עובד במחשב שלך בלבד. המידע לא נשלח לשום מקום!',
+                step1: '🔍 שלב 1: הסרת שמות',
+                step2: '🔄 שלב 2: החזרת שמות',
+                labelOriginal: 'הטקסט המקורי:',
+                labelNames: 'שמות ווריאציות להסרה (מופרדים בפסיקים):',
+                tip: '💡 טיפ: רשום את השם המלא ואז גם את החלקים הנפרדים',
+                btnRemove: 'הסר שמות והחלף ב"פלוני אלמוני"',
+                labelClean: 'טקסט נקי (ללא שמות):',
+                btnCopy1: 'העתק טקסט נקי',
+                labelAdvice: 'טקסט עם עצות/שיפורים מה-AI:',
+                btnRestore: 'החזר שם מקורי',
+                labelFinal: 'טקסט סופי (עם השם המקורי):',
+                btnCopy2: 'העתק טקסט סופי',
+                copySuccess: 'הועתק בהצלחה!',
+                placeholder: 'פלוני אלמוני'
+            },
+            ru: {
+                title: '🔒 Инструмент удаления и восстановления имен',
+                warning: '<strong>⚠️ Важно:</strong> Этот инструмент работает только на вашем компьютере. Данные никуда не отправляются!',
+                step1: '🔍 Шаг 1: Удаление имен',
+                step2: '🔄 Шаг 2: Восстановление имен',
+                labelOriginal: 'Исходный текст:',
+                labelNames: 'Имена и варианты для удаления (через запятую):',
+                tip: '💡 Совет: Напишите полное имя, а затем отдельные части',
+                btnRemove: 'Удалить имена и заменить на "неизвестное лицо"',
+                labelClean: 'Очищенный текст (без имен):',
+                btnCopy1: 'Копировать очищенный текст',
+                labelAdvice: 'Текст с советами/улучшениями от ИИ:',
+                btnRestore: 'Восстановить исходное имя',
+                labelFinal: 'Итоговый текст (с исходным именем):',
+                btnCopy2: 'Копировать итоговый текст',
+                copySuccess: 'Скопировано успешно!',
+                placeholder: 'неизвестное лицо'
+            },
+            ar: {
+                title: '🔒 أداة إزالة واستعادة الأسماء',
+                warning: '<strong>⚠️ مهم:</strong> هذه الأداة تعمل على جهازك فقط. البيانات لا ترسل لأي مكان!',
+                step1: '🔍 الخطوة 1: إزالة الأسماء',
+                step2: '🔄 الخطوة 2: استعادة الأسماء',
+                labelOriginal: 'النص الأصلي:',
+                labelNames: 'الأسماء والمتغيرات للإزالة (مفصولة بفواصل):',
+                tip: '💡 نصيحة: اكتب الاسم الكامل ثم الأجزاء المنفصلة',
+                btnRemove: 'احذف الأسماء واستبدلها بـ"شخص مجهول"',
+                labelClean: 'نص منظف (بدون أسماء):',
+                btnCopy1: 'انسخ النص المنظف',
+                labelAdvice: 'نص مع النصائح/التحسينات من الذكاء الاصطناعي:',
+                btnRestore: 'استعد الاسم الأصلي',
+                labelFinal: 'النص النهائي (مع الاسم الأصلي):',
+                btnCopy2: 'انسخ النص النهائي',
+                copySuccess: 'تم النسخ بنجاح!',
+                placeholder: 'شخص مجهول'
+            }
+        };
+        
+        // تحديث اللغة
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            const t = translations[lang];
+            
+            // تحديث النصوص
+            document.getElementById('title').textContent = t.title;
+            document.getElementById('warning').innerHTML = t.warning;
+            document.getElementById('step1-title').textContent = t.step1;
+            document.getElementById('step2-title').textContent = t.step2;
+            document.getElementById('label-original').textContent = t.labelOriginal;
+            document.getElementById('label-names').textContent = t.labelNames;
+            document.getElementById('tip').textContent = t.tip;
+            document.getElementById('btn-remove-text').textContent = t.btnRemove;
+            document.getElementById('label-clean').textContent = t.labelClean;
+            document.getElementById('btn-copy1-text').textContent = t.btnCopy1;
+            document.getElementById('label-advice').textContent = t.labelAdvice;
+            document.getElementById('btn-restore-text').textContent = t.btnRestore;
+            document.getElementById('label-final').textContent = t.labelFinal;
+            document.getElementById('btn-copy2-text').textContent = t.btnCopy2;
+            document.getElementById('copySuccess1').textContent = t.copySuccess;
+            document.getElementById('copySuccess2').textContent = t.copySuccess;
+            
+            // تحديث placeholders
+            document.getElementById('originalText').placeholder = document.getElementById('originalText').getAttribute('data-placeholder-' + lang);
+            document.getElementById('nameToRemove').placeholder = document.getElementById('nameToRemove').getAttribute('data-placeholder-' + lang);
+            document.getElementById('cleanText').placeholder = document.getElementById('cleanText').getAttribute('data-placeholder-' + lang);
+            document.getElementById('textWithAdvice').placeholder = document.getElementById('textWithAdvice').getAttribute('data-placeholder-' + lang);
+            document.getElementById('finalText').placeholder = document.getElementById('finalText').getAttribute('data-placeholder-' + lang);
+            
+            // تحديث اتجاه النص
+            if (lang === 'ar' || lang === 'he') {
+                document.body.style.direction = 'rtl';
+            } else {
+                document.body.style.direction = 'ltr';
+            }
+            
+            // تحديث الأزرار
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('lang-' + lang).classList.add('active');
+        }
+        
+        // تحديد اللغة الافتراضية
+        document.addEventListener('DOMContentLoaded', function() {
+            changeLanguage('he');
+        });
+        
+        function removeName() {
+            try {
+                const originalText = document.getElementById('originalText').value;
+                const namesToRemove = document.getElementById('nameToRemove').value.trim();
+                
+                if (!originalText) {
+                    alert('אנא הכנס את הטקסט המקורי');
+                    return;
+                }
+                
+                if (!namesToRemove) {
+                    alert('אנא הכנס את השמות להסרה');
+                    return;
+                }
+                
+                // פיצול השמות לפי פסיקים וניקוי רווחים
+                const namesList = namesToRemove.split(',');
+                const cleanedNames = [];
+                
+                for (let i = 0; i < namesList.length; i++) {
+                    const name = namesList[i].trim();
+                    if (name.length > 0) {
+                        cleanedNames.push(name);
+                    }
+                }
+                
+                if (cleanedNames.length === 0) {
+                    alert('אנא הכנס לפחות שם אחד');
+                    return;
+                }
+                
+                // שמירת השמות המקוריים
+                originalNames = cleanedNames;
+                
+                // מיון השמות לפי אורך (מהארוך לקצר)
+                const sortedNames = cleanedNames.slice().sort(function(a, b) {
+                    return b.length - a.length;
+                });
+                
+                let cleanText = originalText;
+                
+                // החלפת כל השמות בטקסט הרלוונטי לשפה
+                const placeholder = translations[currentLanguage].placeholder;
+                for (let i = 0; i < sortedNames.length; i++) {
+                    const name = sortedNames[i];
+                    // החלפה פשוטה בלי regex מורכב
+                    cleanText = cleanText.split(name).join(placeholder);
+                }
+                
+                document.getElementById('cleanText').value = cleanText;
+                
+            } catch (error) {
+                alert('אירעה שגיאה: ' + error.message);
+                console.error('Error in removeName:', error);
+            }
+        }
+        
+        function restoreName() {
+            try {
+                const textWithAdvice = document.getElementById('textWithAdvice').value;
+                
+                if (!textWithAdvice) {
+                    alert('אנא הכנס את הטקסט עם העצות מה-AI');
+                    return;
+                }
+                
+                if (!originalNames || originalNames.length === 0) {
+                    alert('לא נמצאו שמות מקוריים. אנא הפעל תחילה את שלב הסרת השמות');
+                    return;
+                }
+                
+                // החזרת השם הראשון (השם המלא בדרך כלל) במקום הטקסט הכללי
+                const mainName = originalNames[0];
+                const placeholder = translations[currentLanguage].placeholder;
+                const finalText = textWithAdvice.split(placeholder).join(mainName);
+                
+                document.getElementById('finalText').value = finalText;
+                
+            } catch (error) {
+                alert('אירעה שגיאה: ' + error.message);
+                console.error('Error in restoreName:', error);
+            }
+        }
+        
+        function copyToClipboard(elementId) {
+            try {
+                const element = document.getElementById(elementId);
+                const text = element.value;
+                
+                if (!text) {
+                    alert('אין טקסט להעתקה');
+                    return;
+                }
+                
+                // ניסיון להעתיק עם clipboard API
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(function() {
+                        showCopySuccess(elementId);
+                    }).catch(function() {
+                        // גיבוי למקרה שההעתקה האוטומטית לא עובדת
+                        fallbackCopy(element);
+                    });
+                } else {
+                    // גיבוי למקרה שאין clipboard API
+                    fallbackCopy(element);
+                }
+                
+            } catch (error) {
+                alert('שגיאה בהעתקה: ' + error.message);
+                console.error('Error in copyToClipboard:', error);
+            }
+        }
+        
+        function fallbackCopy(element) {
+            try {
+                element.select();
+                element.setSelectionRange(0, 99999); // עבור מכשירים ניידים
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showCopySuccess(element.id);
+                } else {
+                    alert('לא ניתן להעתיק אוטומטית. אנא העתק ידנית');
+                }
+            } catch (error) {
+                alert('לא ניתן להעתיק אוטומטית. אנא העתק ידנית');
+            }
+        }
+        
+        function showCopySuccess(elementId) {
+            const successElement = document.getElementById(
+                elementId === 'cleanText' ? 'copySuccess1' : 'copySuccess2'
+            );
+            successElement.classList.add('show');
+            setTimeout(function() {
+                successElement.classList.remove('show');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
